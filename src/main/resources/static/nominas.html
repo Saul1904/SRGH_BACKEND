@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRH - Nóminas</title>
+    <link rel="stylesheet" href="nominas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
+                    <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
+                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
+                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
+                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <header class="header">
+            <h1>Gestión de Nóminas</h1>
+            <button class="btn-agregar" onclick="mostrarModalAgregar()">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Registrar Nómina
+            </button>
+        </header>
+
+        <!-- ✅ Barra de búsqueda -->
+<input type="text" id="buscar-nomina" placeholder="Buscar por empleado o fecha de pago">
+
+<!-- ✅ Filtro por fecha de pago -->
+<select id="filtro-fecha">
+    <option value="">Todas las fechas</option>
+    <option value="Última semana">Última semana</option>
+    <option value="Último mes">Último mes</option>
+    <option value="Últimos 3 meses">Últimos 3 meses</option>
+</select>
+
+        <!-- ✅ Lista de nóminas -->
+        <section class="nominas">
+            <h2>Lista de Nóminas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empleado</th>
+                        <th>Fecha de Pago</th>
+                        <th>Sueldo Base</th>
+                        <th>Deducciones</th>
+                        <th>Pago Neto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-nominas">
+                    <!-- Aquí se cargarán las nóminas dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- ✅ Modal para agregar nóminas -->
+    <div id="modal-agregar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-agregar')">&times;</span>
+            <h2>Registrar Nómina</h2>
+            <form id="form-agregar">
+                <label for="empleado-id">Empleado:</label>
+                <select id="empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="fecha-pago">Fecha de Pago:</label>
+                <input type="date" id="fecha-pago" required>
+
+                <label for="sueldo-base">Sueldo Base:</label>
+                <input type="number" id="sueldo-base" required>
+
+                <label for="deducciones">Deducciones:</label>
+                <input type="number" id="deducciones" required>
+
+                <label for="pago-neto">Pago Neto:</label>
+                <input type="number" id="pago-neto" required>
+
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ Modal para editar nóminas -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-editar')">&times;</span>
+            <h2>Editar Nómina</h2>
+            <form id="form-editar">
+                <input type="hidden" id="editar-id">
+                
+                <label for="editar-empleado-id">Empleado:</label>
+                <select id="editar-empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="editar-fecha-pago">Fecha de Pago:</label>
+                <input type="date" id="editar-fecha-pago" required>
+
+                <label for="editar-sueldo-base">Sueldo Base:</label>
+                <input type="number" id="editar-sueldo-base" required>
+
+                <label for="editar-deducciones">Deducciones:</label>
+                <input type="number" id="editar-deducciones" required>
+
+                <label for="editar-pago-neto">Pago Neto:</label>
+                <input type="number" id="editar-pago-neto" required>
+
+                <button type="submit">Actualizar</button>
+            </form>
+        </div>
+    </div>
+    <!-- Notificación de éxito -->
+    <div id="notificacion" class="notificacion">Empleado agregado con éxito</div>
+    <!-- ✅ Notificación de éxito -->
+
+    <script src="nominas.js"></script>
+</body>
+</html>

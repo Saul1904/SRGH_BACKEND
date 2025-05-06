@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRH - Documentos</title>
+    <link rel="stylesheet" href="documentos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
+                    <li><a href="candidatos.html"><i class="fas fa-user"></i> Candidatos</a></li>
+                    <li><a href="ausencias.html"><i class="fas fa-user"></i> Ausencias</a></li>
+                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
+                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
+                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <header class="header">
+            <h1>Gestión de Documentos</h1>
+            <button class="btn-agregar" onclick="mostrarModalAgregar()">
+                <i class="fa-solid fa-file-upload"></i> Subir Documento
+            </button>
+        </header>
+
+        <!-- ✅ Barra de búsqueda -->
+        <input type="text" id="buscar-documento" placeholder="Buscar por empleado o tipo de documento">
+
+        <!-- ✅ Filtro por tipo de documento -->
+        <select id="filtro-documento">
+            <option value="">Todos los tipos</option>
+            <option value="Contrato">Contrato</option>
+            <option value="Recibo de Nómina">Recibo de Nómina</option>
+            <option value="Identificación">Identificación</option>
+        </select>
+
+        <!-- ✅ Lista de documentos -->
+        <section class="documentos">
+            <h2>Lista de Documentos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empleado</th>
+                        <th>Tipo de Documento</th>
+                        <th>Fecha de Subida</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-documentos">
+                    <!-- Aquí se cargarán los documentos dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- ✅ Modal para agregar documentos -->
+<div id="modal-agregar" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal('modal-agregar')">&times;</span>
+        <h2>Subir Documento</h2>
+        <form id="form-agregar">
+            <label for="empleado-id">Empleado:</label>
+            <select id="empleado-id" required>
+                <!-- Aquí se cargarán los empleados dinámicamente -->
+            </select>
+
+            <label for="tipo-documento">Tipo de Documento:</label>
+            <select id="tipo-documento" required>
+                <option value="Contrato">Contrato</option>
+                <option value="Recibo de Nómina">Recibo de Nómina</option>
+                <option value="Identificación">Identificación</option>
+            </select>
+
+            <label for="fecha-subida">Fecha de Subida:</label>
+            <input type="date" id="fecha-subida" required>
+
+            <label for="archivo">Seleccionar Archivo:</label>
+            <input type="file" id="archivo" required>
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<!-- ✅ Modal para editar documentos -->
+<div id="modal-editar" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal('modal-editar')">&times;</span>
+        <h2>Editar Documento</h2>
+        <form id="form-editar">
+            <input type="hidden" id="editar-id">
+
+            <label for="editar-empleado-id">Empleado:</label>
+            <select id="editar-empleado-id" required>
+                <!-- Aquí se cargarán los empleados dinámicamente -->
+            </select>
+
+            <label for="editar-tipo-documento">Tipo de Documento:</label>
+            <select id="editar-tipo-documento" required>
+                <option value="Contrato">Contrato</option>
+                <option value="Recibo de Nómina">Recibo de Nómina</option>
+                <option value="Identificación">Identificación</option>
+            </select>
+
+            <label for="editar-fecha-subida">Fecha de Subida:</label>
+            <input type="date" id="editar-fecha-subida" required>
+
+            <button type="submit">Actualizar</button>
+        </form>
+    </div>
+</div>
+    <!-- Notificación de éxito -->
+    <div id="notificacion" class="notificacion">Empleado agregado con éxito</div>
+
+   
+
+    <script src="documentos.js"></script>
+</body>
+</html>

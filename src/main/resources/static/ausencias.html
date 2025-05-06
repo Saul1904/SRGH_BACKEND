@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRH - Ausencias</title>
+    <link rel="stylesheet" href="ausencias.css"> <!-- Luego agregamos estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Barra lateral hamburguesa -->
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
+                    <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
+                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
+                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
+                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        
+
+    <div class="container">
+        <header class="header">
+            <h1>Gestión de Ausencias</h1>
+            <button class="btn-agregar" onclick="mostrarModalAgregar()">
+                <i class="fa-solid fa-calendar-plus"></i> Registrar Ausencia
+            </button>
+        </header>
+
+        <!-- ✅ Barra de búsqueda -->
+    <input type="text" id="buscar-ausencia" placeholder="Buscar por empleado, tipo o fecha">
+
+    <!-- ✅ Filtro por tipo de ausencia -->
+    <select id="filtro-tipo">
+    <option value="">Todos los tipos</option>
+    <option value="Vacaciones">Vacaciones</option>
+    <option value="Incapacidad">Incapacidad</option>
+    <option value="Permiso">Permiso</option>
+    <option value="Falta">Falta</option>
+    </select>
+        
+
+        <!-- Lista de ausencias -->
+        <section class="ausencias">
+            <h2>Lista de Ausencias</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empleado</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Tipo de Ausencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-ausencias">
+                    <!-- Aquí se cargarán las ausencias dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Modal para agregar ausencias -->
+    <div id="modal-agregar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-agregar')">&times;</span>
+            <h2>Registrar Ausencia</h2>
+            <form id="form-agregar">
+                <label for="empleado-id">Empleado:</label>
+                <select id="empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="fecha-inicio">Fecha Inicio:</label>
+                <input type="date" id="fecha-inicio" required>
+
+                <label for="fecha-fin">Fecha Fin:</label>
+                <input type="date" id="fecha-fin" required>
+
+                <label for="tipo-ausencia">Tipo de Ausencia:</label>
+                <select id="tipo-ausencia" required>
+                    <option value="Vacaciones">Vacaciones</option>
+                    <option value="Permiso">Permiso</option>
+                    <option value="Enfermedad">Enfermedad</option>
+                    <option value="Falta">Falta</option>
+                </select>
+                
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar ausencias -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-editar')">&times;</span>
+            <h2>Editar Ausencia</h2>
+            <form id="form-editar">
+                <input type="hidden" id="editar-id">
+                
+                <label for="editar-empleado-id">Empleado:</label>
+                <select id="editar-empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="editar-fecha-inicio">Fecha Inicio:</label>
+                <input type="date" id="editar-fecha-inicio" required>
+
+                <label for="editar-fecha-fin">Fecha Fin:</label>
+                <input type="date" id="editar-fecha-fin" required>
+
+                <label for="editar-tipo-ausencia">Tipo de Ausencia:</label>
+                <select id="editar-tipo-ausencia" required>
+                    <option value="Vacaciones">Vacaciones</option>
+                    <option value="Permiso">Permiso</option>
+                    <option value="Enfermedad">Enfermedad</option>
+                    <option value="Falta">Falta</option>
+                </select>
+                
+                <button type="submit">Actualizar</button>
+            </form>
+        </div>
+    </div>
+
+     <!-- Notificación de éxito -->
+     <div id="notificacion" class="notificacion">Ausencia agregado con éxito</div>
+     <!-- ✅ Notificación de éxito -->
+     
+
+    
+
+    <script src="ausencias.js"></script>
+</body>
+</html>

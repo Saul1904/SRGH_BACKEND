@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRH - Página Principal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Si está en la misma carpeta -->
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    
+
+</head>
+<body>
+    
+
+    <div class="container">
+        <!-- Barra lateral hamburguesa -->
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
+                    <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
+                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
+                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
+                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main>
+            <header class="header">
+                <div class="bienvenida">
+                    <div class="perfil">
+                        <i class="fas fa-user"></i> <span id="perfil-nombre">Cargando...</span>
+                    </div>
+                    <button id="cerrar-sesion">Cerrar sesión</button>
+                    <h1>SGRH</h1>
+                    <p>Optimiza y administra eficientemente los recursos humanos.</p>
+                </div>
+                
+                
+                
+
+                <div class="card" id="card-empleados">
+                    <h3>👨‍💼Empleados</h3>
+                    <p id="empleados-total">Cargando...</p>
+                </div>
+                
+                <div class="card" id="card-nominas">
+                    <h3>💰Nóminas</h3>
+                    <p id="nominas-total">Cargando...</p>
+                </div>
+                
+                <div class="card" id="card-ausencias">
+                    <h3>📅Ausencias</h3>
+                    <p id="ausencias-total">Cargando...</p>
+                </div>
+
+                            <!-- Nueva sección: Encuesta de estado de ánimo -->
+             <!-- Encuesta tipo tarjeta flotante -->
+    <div class="survey-card">
+        <h3>¿Cómo te has sentido hoy?</h3>
+        <p>Elige una carita:</p>
+        <div class="emoji-options">
+    <span data-label="Enfadado">😠</span>
+    <span data-label="Presionado">😓</span>
+    <span data-label="Aburrido">😐</span>
+    <span data-label="Motivado">🚀</span>
+    <span data-label="Productivo">💪</span>
+</div>
+        <h3>Resultados:</h3>
+        <ul id="resultados"></ul>
+    </div>
+
+
+
+
+                <canvas id="graficaAusencias" width="600" height="300" style="max-width: 100%; max-height: 400px;"></canvas>
+
+
+            <section class="chart">
+                <canvas id="statsChart"></canvas>
+            </section>
+            
+        </main>
+        
+    </div>
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    
+    <footer class="footer">
+        <p>&copy; 2025 SSMA Solutions. Todos los derechos reservados.</p>
+        <p>Contacto: <a href="mailto:ssma_solutions@correo.com">ssma_solutions@outlook.com</a> | Tel: +52 555-123-4567</p>
+
+    </footer>
+</body>
+</html>

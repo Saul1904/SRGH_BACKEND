@@ -1,0 +1,189 @@
+/* Estilo general */
+.container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+/*BARRA LATERAL*/
+
+/* Barra lateral hamburguesa */
+.sidebar {
+    width: 60px;
+    height: 100vh;
+    background: #2c3e50;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 15px;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.sidebar:hover {
+    width: 250px; /* Expande al pasar el mouse */
+}
+
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.menu-content {
+    display: none;
+}
+
+.sidebar:hover .menu-content {
+    display: block;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 20px 0 0 10px;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    transition: background 0.3s, padding-left 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #2c3e90;
+    border-radius: 5px;
+    padding-left: 20px; /* Efecto de desplazamiento */
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+
+/* Botón de agregar ausencia */
+.btn-agregar {
+    position: right;
+    right: 20px;
+    top: 20px;
+    padding: 10px 15px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #2c3e90;
+}
+
+/* Tabla de ausencias */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #2c3e50;
+    color: white;
+}
+
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.mostrar {
+    opacity: 1;
+}
+
+.modal.mostrar .modal-content {
+    transform: scale(1);
+}
+
+.close {
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    float: right;
+}
+
+/* Notificación */
+.notificacion {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: green;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notificacion.mostrar {
+    opacity: 1;
+}
+
+/* Ajustes en los botones de la tabla */
+button i {
+    margin-right: 5px;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/*BARRA DE BUSQUEDA*/
+#buscar-empleado, #filtro-departamento {
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}

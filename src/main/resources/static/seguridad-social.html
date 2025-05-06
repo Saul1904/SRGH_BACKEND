@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRH - Seguridad Social</title>
+    <link rel="stylesheet" href="seguridad-social.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
+                    <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
+                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
+                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
+                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <header class="header">
+            <h1>Gestión de Seguridad Social</h1>
+            <button class="btn-agregar" onclick="mostrarModalAgregar()">
+                <i class="fa-solid fa-shield-heart"></i> Registrar Beneficio
+            </button>
+        </header>
+
+            <!-- ✅ Barra de búsqueda -->
+<input type="text" id="buscar-beneficio" placeholder="Buscar por empleado o tipo de seguro">
+
+<!-- ✅ Filtro por tipo de seguro -->
+<select id="filtro-seguro">
+    <option value="">Todos los tipos</option>
+    <option value="Seguro Médico">Seguro Médico</option>
+    <option value="Fondo de Pensiones">Fondo de Pensiones</option>
+    <option value="Subsidio de Incapacidad">Subsidio de Incapacidad</option>
+</select>
+
+        <!-- ✅ Lista de beneficios de seguridad social -->
+        <section class="seguridad-social">
+            <h2>Lista de Beneficios</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empleado</th>
+                        <th>Número de Seguro</th>
+                        <th>Tipo de Seguro</th>
+                        <th>Fecha de Registro</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-seguridad-social">
+                    <!-- Aquí se cargarán los beneficios dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- ✅ Modal para agregar beneficios -->
+    <div id="modal-agregar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-agregar')">&times;</span>
+            <h2>Registrar Beneficio</h2>
+            <form id="form-agregar">
+                <label for="empleado-id">Empleado:</label>
+                <select id="empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="numero-seguro">Número de Seguro:</label>
+                <input type="text" id="numero-seguro" required>
+
+                <label for="tipo-seguro">Tipo de Seguro:</label>
+                <select id="tipo-seguro" required>
+                    <option value="Seguro Médico">Seguro Médico</option>
+                    <option value="Fondo de Pensiones">Fondo de Pensiones</option>
+                    <option value="Subsidio de Incapacidad">Subsidio de Incapacidad</option>
+                </select>
+
+                <label for="fecha-registro">Fecha de Registro:</label>
+                <input type="date" id="fecha-registro" required>
+
+                <label for="estado">Estado:</label>
+                <select id="estado" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ Modal para editar beneficios -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-editar')">&times;</span>
+            <h2>Editar Beneficio</h2>
+            <form id="form-editar">
+                <input type="hidden" id="editar-id">
+                
+                <label for="editar-empleado-id">Empleado:</label>
+                <select id="editar-empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="editar-numero-seguro">Número de Seguro:</label>
+                <input type="text" id="editar-numero-seguro" required>
+
+                <label for="editar-tipo-seguro">Tipo de Seguro:</label>
+                <select id="editar-tipo-seguro" required>
+                    <option value="Seguro Médico">Seguro Médico</option>
+                    <option value="Fondo de Pensiones">Fondo de Pensiones</option>
+                    <option value="Subsidio de Incapacidad">Subsidio de Incapacidad</option>
+                </select>
+
+                <label for="editar-fecha-registro">Fecha de Registro:</label>
+                <input type="date" id="editar-fecha-registro" required>
+
+                <label for="editar-estado">Estado:</label>
+                <select id="editar-estado" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+
+                <button type="submit">Actualizar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notificación de éxito -->
+    <div id="notificacion" class="notificacion">Empleado agregado con éxito</div>
+    
+    <script src="seguridad-social.js"></script>
+</body>
+</html>

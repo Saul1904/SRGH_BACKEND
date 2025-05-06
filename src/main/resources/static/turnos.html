@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRH - Turnos</title>
+    <link rel="stylesheet" href="turnos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Barra lateral hamburguesa -->
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-content">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
+                    <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
+                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
+                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
+                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <header class="header">
+            <h1>Gestión de Turnos</h1>
+            <button class="btn-agregar" onclick="mostrarModalAgregar()">
+                <i class="fa-solid fa-clock"></i> Registrar Turno
+            </button>
+        </header>
+
+       <!-- ✅ Barra de búsqueda -->
+<input type="text" id="buscar-turno" placeholder="Buscar por empleado o fecha">
+
+<!-- ✅ Filtro por fecha -->
+<select id="filtro-fecha">
+    <option value="">Todas las fechas</option>
+    <option value="Hoy">Hoy</option>
+    <option value="Semana">Última semana</option>
+    <option value="Mes">Último mes</option>
+</select>
+
+        <!-- ✅ Lista de turnos -->
+        <section class="turnos">
+            <h2>Lista de Turnos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empleado</th>
+                        <th>Fecha</th>
+                        <th>Horario Inicio</th>
+                        <th>Horario Fin</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-turnos">
+                    <!-- Aquí se cargarán los turnos dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- ✅ Modal para agregar turnos -->
+    <div id="modal-agregar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-agregar')">&times;</span>
+            <h2>Registrar Turno</h2>
+            <form id="form-agregar">
+                <label for="empleado-id">Empleado:</label>
+                <select id="empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+
+                <label for="horario-inicio">Horario Inicio:</label>
+                <input type="time" id="horario-inicio" required>
+
+                <label for="horario-fin">Horario Fin:</label>
+                <input type="time" id="horario-fin" required>
+
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ Modal para editar turnos -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('modal-editar')">&times;</span>
+            <h2>Editar Turno</h2>
+            <form id="form-editar">
+                <input type="hidden" id="editar-id">
+                
+                <label for="editar-empleado-id">Empleado:</label>
+                <select id="editar-empleado-id" required>
+                    <!-- Aquí se cargarán los empleados dinámicamente -->
+                </select>
+                
+                <label for="editar-fecha">Fecha:</label>
+                <input type="date" id="editar-fecha" required>
+
+                <label for="editar-horario-inicio">Horario Inicio:</label>
+                <input type="time" id="editar-horario-inicio" required>
+
+                <label for="editar-horario-fin">Horario Fin:</label>
+                <input type="time" id="editar-horario-fin" required>
+
+                <button type="submit">Actualizar</button>
+            </form>
+        </div>
+    </div>
+    <!-- Notificación de éxito -->
+    <div id="notificacion" class="notificacion">Ausencia agregado con éxito</div>
+
+    <script src="turnos.js"></script>
+</body>
+</html>
