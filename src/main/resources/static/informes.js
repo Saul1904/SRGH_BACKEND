@@ -185,3 +185,76 @@ function mostrarNotificacion(mensaje) {
         }, 500);
     }, 3000);
 }
+
+// =================== INDICADORES ===================
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("http://localhost:8080/api/informes")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("informes-total").textContent = data.informes;
+            document.getElementById("ultimo-informe").textContent = data.ultimoInforme;
+
+        })
+        .catch(error => console.error("Error al obtener datos de informes:", error));
+});
+
+// =================== GRAFICA ===================
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarGrafica();
+    setInterval(actualizarGrafica, 10000); // Actualiza la gráfica cada 10 segundos
+});
+
+let myChart;
+
+function actualizarGrafica() {
+    fetch("http://localhost:8080/api/informes/grafica")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener los datos de la gráfica");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const ctx = document.getElementById('grafico-informes').getContext('2d');
+
+            // Si la gráfica ya existe, destrúyela antes de crear una nueva
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            // Crear la gráfica con los datos actualizados
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Cantidad de Informes',
+                        data: data.data,
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error al actualizar la gráfica:", error);
+        });
+}

@@ -1,11 +1,20 @@
 // =================== INICIALIZACIÓN ===================
 document.addEventListener("DOMContentLoaded", () => {
     cargarEmpleados();
-    document.getElementById("form-agregar").addEventListener("submit", guardarEmpleado);
-    document.getElementById("form-editar").addEventListener("submit", actualizarEmpleado);
-    document.getElementById("buscar-empleado").addEventListener("input", filtrarEmpleados);
-    document.getElementById("filtro-departamento").addEventListener("change", filtrarEmpleados);
+
+    const formAgregar = document.getElementById("form-agregar");
+    if (formAgregar) formAgregar.addEventListener("submit", guardarEmpleado);
+
+    const formEditar = document.getElementById("form-editar");
+    if (formEditar) formEditar.addEventListener("submit", actualizarEmpleado);
+
+    const inputBuscar = document.getElementById("buscar-empleado");
+    if (inputBuscar) inputBuscar.addEventListener("input", filtrarEmpleados);
+
+    const filtroDepartamento = document.getElementById("filtro-departamento");
+    if (filtroDepartamento) filtroDepartamento.addEventListener("change", filtrarEmpleados);
 });
+
 
 
 // =================== CARGAR EMPLEADOS ===================
@@ -21,7 +30,7 @@ function cargarEmpleados() {
                 tarjeta.classList.add('tarjeta-empleado');
 
                 tarjeta.innerHTML = `
-                    <img id="img-${empleado.id}" src="${empleado.imagenUrl || 'img/default-user.png'}"  
+                    <img id="img-${empleado.id}" src="${empleado.Foto || 'img/default-user.png'}"  
                     alt="Foto de ${empleado.nombre} ${empleado.apellido}" class="imagen-empleado">
 
                     <h3>${empleado.nombre}</h3>
@@ -46,9 +55,21 @@ function cargarEmpleados() {
                 `;
 
                 // 🔹 Agregar el evento para redirigir al hacer clic en la tarjeta
-                tarjeta.onclick = () => {
+                tarjeta.addEventListener("click", () => {
                     window.location.href = `empleado.html?id=${empleado.id}`;
-                };
+                });
+                // Evitar redirección al hacer clic en el input de imagen
+tarjeta.querySelector(`#file-${empleado.id}`).addEventListener("click", e => e.stopPropagation());
+
+// Evitar redirección al hacer clic en el label de imagen
+tarjeta.querySelector(`label[for="file-${empleado.id}"]`).addEventListener("click", e => e.stopPropagation());
+
+// Evitar redirección al hacer clic en el botón "Editar"
+tarjeta.querySelector("button:nth-of-type(1)").addEventListener("click", e => e.stopPropagation());
+
+// Evitar redirección al hacer clic en el botón "Eliminar"
+tarjeta.querySelector("button:nth-of-type(2)").addEventListener("click", e => e.stopPropagation());
+
 
                 contenedor.appendChild(tarjeta);
             });
@@ -58,59 +79,6 @@ function cargarEmpleados() {
 // Llama la función al cargar la página
 document.addEventListener('DOMContentLoaded', cargarEmpleados);
 
-// =================== MOSTRAR VISTA PREVIA DE IMAGEN ===================
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("img").forEach(img => {
-        const empleadoId = img.id.split("-")[1]; // Asumiendo que el ID es "img-123"
-        const imagenGuardada = localStorage.getItem(`img-${empleadoId}`);
-        if (imagenGuardada) {
-            img.src = imagenGuardada;
-        }
-    });
-});
-
-function mostrarVistaPrevia(input, empleadoId) {
-    const archivo = input.files[0];
-    if (!archivo) return;
-
-    const lector = new FileReader();
-    lector.onload = function (e) {
-        const imagen = document.querySelector(`#img-${empleadoId}`);
-        if (imagen) {
-            imagen.src = e.target.result;
-
-            // Guarda la vista previa temporal en localStorage
-            localStorage.setItem(`img-${empleadoId}`, e.target.result);
-        }
-    };
-    lector.readAsDataURL(archivo);
-}
-
-// =================== SUBIR IMAGEN ===================
-const subirImagen = async (empleadoId, archivo) => {
-    const formData = new FormData();
-    formData.append("imagen", archivo);
-
-    try {
-        const response = await fetch(`/api/empleados/${empleadoId}/imagen`, {
-            method: "POST",
-            body: formData,
-        });
-
-        if (response.ok) {
-            const data = await response.json(); // Suponiendo que el servidor responde con la URL de la imagen
-            const imagen = document.querySelector(`#img-${empleadoId}`);
-            if (imagen) {
-                imagen.src = data.url; // Asigna la nueva URL obtenida del servidor
-            }
-            console.log("Imagen subida con éxito.");
-        } else {
-            console.log("Error al subir la imagen.");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-    }
-};
 
 
 // =================== GUARDAR EMPLEADO ===================
@@ -144,55 +112,6 @@ function guardarEmpleado(event) {
     .catch(error => console.error("Error:", error));
 }
 
-// =================== EDITAR EMPLEADO ===================
-function editarEmpleado(id) {
-    fetch(`http://localhost:8080/api/empleados/${id}`)
-        .then(response => response.json())
-        .then(empleado => {
-            document.getElementById("editar-id").value = id;
-            document.getElementById("editar-nombre").value = empleado.nombre;
-            document.getElementById("editar-apellido").value = empleado.apellido;
-            document.getElementById("editar-email").value = empleado.email;
-            document.getElementById("editar-telefono").value = empleado.telefono;
-            document.getElementById("editar-sueldo").value = empleado.sueldo;
-            document.getElementById("editar-fecha_contratacion").value = empleado.fechaContratacion;
-            document.getElementById("editar-departamento").value = empleado.departamento;
-
-            mostrarModal("modal-editar");
-        })
-        .catch(error => console.error("Error al obtener empleado:", error));
-}
-
-function actualizarEmpleado(event) {
-    event.preventDefault();
-
-    const id = document.getElementById("editar-id").value;
-    const empleado = {
-        nombre: document.getElementById("editar-nombre").value,
-        apellido: document.getElementById("editar-apellido").value,
-        email: document.getElementById("editar-email").value,
-        telefono: document.getElementById("editar-telefono").value,
-        sueldo: parseFloat(document.getElementById("editar-sueldo").value),
-        fechaContratacion: document.getElementById("editar-fecha_contratacion").value,
-        departamento: document.getElementById("editar-departamento").value
-    };
-
-    fetch(`http://localhost:8080/api/empleados/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(empleado)
-    })
-    .then(response => {
-        if (response.ok) {
-            cargarEmpleados();
-            cerrarModal("modal-editar");
-            mostrarNotificacion("Empleado actualizado correctamente");
-        } else {
-            console.error("Error al actualizar empleado.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
-}
 
 // =================== ELIMINAR EMPLEADO ===================
 function eliminarEmpleado(id) {
@@ -258,6 +177,43 @@ function filtrarEmpleados() {
     });
 }
 
+// =================== IMAGEN ===================
+function mostrarVistaPrevia(input, id) {
+    const file = input.files[0];
+    if (!file) return;
 
+    const formData = new FormData();
+    formData.append("file", file);
 
+    fetch(`http://localhost:8080/api/empleados/${id}/imagen`, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al subir imagen");
+        }
+        return response.text();
+    })
+    .then(msg => {
+        console.log(msg);
 
+        // Refrescar imagen al instante
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById(`img-${id}`);
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        // Mostrar mensaje animado
+        const mensaje = document.getElementById("mensaje-exito");
+        mensaje.classList.add("mostrar");
+        setTimeout(() => {
+            mensaje.classList.remove("mostrar");
+        }, 3000); // se oculta después de 3 segundos
+    })
+    .catch(error => {
+        console.error("Error al subir la imagen:", error);
+    });
+}

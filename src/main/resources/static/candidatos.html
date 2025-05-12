@@ -4,22 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGRH - Candidatos</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="candidatos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="logo.png" type="image/x-icon">
 </head>
 <body>
 
-    <div class="container">
-        <nav class="sidebar">
-            <button class="hamburger-btn">
+ <div class="container">
+        <!-- Barra lateral hamburguesa -->
+        <nav class="sidebar" id="sidebar">
+            <button class="hamburger-btn" id="hamburgerBtn">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="menu-content">
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                                        <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
                     <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
-                    <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
+                    <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
+                    <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
                 </ul>
             </div>
         </nav>
@@ -50,7 +53,13 @@
         </main>
 
     </div>
+    
 
-    <script src="script.js"></script>
+    <script src="candidatos.js"></script>
+    <footer class="footer">
+        <p>&copy; 2025 SSMA Solutions. Todos los derechos reservados.</p>
+        <p>Contacto: <a href="mailto:ssma_solutions@correo.com">ssma_solutions@outlook.com</a> | Tel: +52 555-123-4567</p>
+
+    </footer>
 </body>
 </html>

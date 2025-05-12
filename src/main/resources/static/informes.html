@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="informes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="logo.png" type="image/x-icon">
+    
 </head>
 <body>
 
@@ -19,35 +20,46 @@
             <div class="menu-content">
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
-                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
                     <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
-                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
-                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
-                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
                     <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
-                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
                     <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
                 </ul>
             </div>
         </nav>
+        
 
         <div class="container">
             <header class="header">
                 <h1>Gestión de Informes</h1>
+                <p>En esta sección puedes gestionar los informes generados por el sistema, como reportes mensuales, evaluaciones de desempeño y auditorías.</p>
                 <button class="btn-agregar" onclick="mostrarModalAgregar()">
                     <i class="fa-solid fa-file-circle-plus"></i> Registrar Informe
                 </button>
+                
+    <div class="indicadores">
+    <div class="indicador">
+        <h3>Total de Informes</h3>
+        <p id="informes-total">Cargando...</p>
+    </div>
+    <div class="indicador">
+        <h3>Último Informe</h3>
+        <p id="ultimo-informe">Cargando...</p>
+    </div>
+</div>
+
+
             </header>
         
             <!-- ✅ Barra de búsqueda -->
-            <input type="text" id="buscar-informe" placeholder="Buscar por tipo o fecha">
+            <input type="text"car-informe" placeholder="Buscar por tipo o fecha">
         
             <!-- ✅ Filtro por tipo de informe -->
             <select id="filtro-tipo-informe">
                 <option value="">Todos los tipos</option>
                 <option value="Reporte Mensual">Reporte Mensual</option>
-                <option value="Evaluación de Desempeño">Evaluación de Desempeño</option>
-                <option value="Auditoría">Auditoría</option>
+                <option value="Evaluacion de Desempeño">Evaluación de Desempeño</option>
+                <option value="Auditoria">Auditoría</option>
                 <option value="Otro">Otro</option>
             </select>
         </div>
@@ -62,6 +74,7 @@
                         <th>ID</th>
                         <th>Tipo de Informe</th>
                         <th>Fecha de Generación</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-informes">
@@ -70,6 +83,7 @@
             </table>
         </section>
     </div>
+
 
     <!-- Modal para agregar informes -->
 <div id="modal-agregar" class="modal">
@@ -110,7 +124,14 @@
 
     <!-- Notificación de éxito -->
     <div id="notificacion" class="notificacion">Empleado agregado con éxito</div>
+    <canvas id="grafico-informes" width="400" height="200"></canvas>
     
     <script src="informes.js"></script>
+    <footer class="footer">
+        <p>&copy; 2025 SSMA Solutions. Todos los derechos reservados.</p>
+        <p>Contacto: <a href="mailto:ssma_solutions@correo.com">ssma_solutions@outlook.com</a> | Tel: +52 555-123-4567</p>
+
+    </footer>
+
 </body>
 </html>

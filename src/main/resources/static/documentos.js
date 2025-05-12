@@ -1,233 +1,135 @@
 document.addEventListener("DOMContentLoaded", () => {
-    cargarDocumentos();
+    const empleadoId = obtenerIdEmpleado();
+    if (!empleadoId) {
+        mostrarError("No se encontró el ID del empleado.");
+        return;
+    }
+
+    cargarDocumentos(empleadoId);
     cargarEmpleadosEnFormulario();
-    document.getElementById("form-agregar").addEventListener("submit", agregarDocumento);
-    document.getElementById("form-editar").addEventListener("submit", actualizarDocumento);
+    document.getElementById("form-subir-documento").addEventListener("submit", event => subirDocumento(event, empleadoId));
 });
 
+// =================== FUNCIONES PRINCIPALES ===================
 
-
-function cargarEmpleadosEnFormulario() {
-    fetch("http://localhost:8080/api/empleados")
-        .then(response => response.json())
-        .then(data => {
-            const selectAgregar = document.getElementById("empleado-id");
-            const selectEditar = document.getElementById("editar-empleado-id");
-
-            if (!selectAgregar || !selectEditar) {
-                console.error("Error: No se encontraron los elementos 'empleado-id' o 'editar-empleado-id'.");
-                return;
-            }
-
-            selectAgregar.innerHTML = "";
-            selectEditar.innerHTML = "";
-
-            data.forEach(empleado => {
-                const option = `<option value="${empleado.id}">${empleado.nombre} ${empleado.apellido}</option>`;
-                selectAgregar.innerHTML += option;
-                selectEditar.innerHTML += option;
-            });
-        })
-        .catch(error => console.error("Error al cargar empleados:", error));
+// Obtener el ID del empleado desde el HTML o la URL
+function obtenerIdEmpleado() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("id");
 }
 
-function cargarDocumentos() {
-    fetch("http://localhost:8080/api/documentos")
+// Cargar documentos del empleado actual
+function cargarDocumentos(empleadoId) {
+    fetch(`http://localhost:8080/api/documentos/empleado/${empleadoId}`)
         .then(response => response.json())
-        .then(data => {
-            console.log("Documentos obtenidos después del POST:", data); // ✅ Verifica en consola
-
-            const tablaDocumentos = document.getElementById("tabla-documentos");
-            tablaDocumentos.innerHTML = "";
-
-            if (!data || data.length === 0) {
-                console.warn("⚠️ No hay documentos registrados en la API.");
-                tablaDocumentos.innerHTML = "<tr><td colspan='5'>No hay documentos disponibles.</td></tr>";
-                return;
-            }
-
-            data.forEach(documento => {
-                const empleadoNombre = documento.empleado 
-                    ? `${documento.empleado.nombre} ${documento.empleado.apellido}` 
-                    : "No asignado";
-
-                const fechaSubida = documento.fechaSubida 
-                    ? new Date(documento.fechaSubida).toLocaleDateString("es-MX") 
-                    : "Sin definir";
-
-                const fila = document.createElement("tr");
-                fila.innerHTML = `
-                    <td>${documento.id}</td>
-                    <td>${empleadoNombre}</td>
-                    <td>${documento.tipoDocumento}</td>
-                    <td>${fechaSubida}</td>
-                    <td>
-                        <button onclick="editarDocumento(${documento.id})">✏️ Editar</button>
-                        <button onclick="eliminarDocumento(${documento.id})">🗑️ Eliminar</button>
-                    </td>
-                `;
-                tablaDocumentos.appendChild(fila);
-            });
-        })
-        .catch(error => console.error("Error al cargar documentos:", error));
+        .then(data => actualizarTablaDocumentos(data))
+        .catch(error => mostrarError("Error al cargar documentos."));
 }
 
+// Actualizar tabla de documentos
+function actualizarTablaDocumentos(documentos) {
+    const tablaDocumentos = document.getElementById("tabla-documentos");
+    tablaDocumentos.innerHTML = "";
 
+    documentos.forEach(documento => {
+        const fila = crearFilaDocumento(documento);
+        tablaDocumentos.appendChild(fila);
+    });
+}
 
-// ✅ Agregar documento
-function agregarDocumento(event) {
-    event.preventDefault(); // ✅ Evita que el formulario recargue la página
+// Crear fila de documento
+function crearFilaDocumento(documento) {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+        <td>${documento.nombreDocumento}</td>
+        <td>${documento.tipoDocumento}</td>
+        <td>${documento.fechaSubida}</td>
+        <td>${documento.estado}</td>
+        <td>
+            <button onclick="verDocumento('${documento.archivo}')">👁️ Ver</button>
+            <button onclick="eliminarDocumento(${documento.id})">🗑️ Eliminar</button>
+        </td>
+    `;
+    return fila;
+}
+
+// =================== CRUD DE DOCUMENTOS ===================
+
+// Subir documento
+function subirDocumento(event, empleadoId) {
+    event.preventDefault();
+
+    // Obtener los valores del formulario
+    const nombreDocumento = document.getElementById("nombre-documento").value.trim();
+    const tipoDocumento = document.getElementById("tipo-documento").value;
+    const archivo = document.getElementById("archivo-documento").files[0];
+
+    // Validación básica
+    if (!nombreDocumento || !tipoDocumento || !archivo) {
+        mostrarError("Por favor completa todos los campos antes de subir el documento.");
+        return;
+    }
 
     const formData = new FormData();
-    formData.append("empleadoId", document.getElementById("empleado-id").value);
-    formData.append("tipoDocumento", document.getElementById("tipo-documento").value.trim());
-    formData.append("fechaSubida", document.getElementById("fecha-subida").value.trim());
-    formData.append("archivo", document.getElementById("archivo").files[0]);
+    formData.append("empleadoId", empleadoId);
+    formData.append("nombreDocumento", nombreDocumento);
+    formData.append("tipoDocumento", tipoDocumento);
+    formData.append("archivo", archivo);
 
     fetch("http://localhost:8080/api/documentos", {
         method: "POST",
         body: formData
     })
-    .then(() => {
-        console.log("Documento subido, recargando lista..."); // ✅ Confirmación en consola
-        cargarDocumentos(); // ✅ Recargar la tabla de documentos
-        cerrarModal("modal-agregar"); // ✅ Cerrar modal
-        mostrarNotificacion("Documento agregado correctamente");
-    })
-    .catch(error => console.error("Error al agregar documento:", error));
-}
-
-
-
-// ✅ Editar documento
-function editarDocumento(id) {
-    fetch(`http://localhost:8080/api/documentos/${id}`)
-        .then(response => response.json())
-        .then(documento => {
-            document.getElementById("editar-id").value = documento.id;
-            document.getElementById("editar-empleado-id").value = documento.empleado ? documento.empleado.id : "";
-            document.getElementById("editar-tipo-documento").value = documento.tipoDocumento;
-            document.getElementById("editar-fecha-subida").value = documento.fechaSubida;
-
-            mostrarModalEditar();
-        })
-        .catch(error => console.error("Error al cargar documento para edición:", error));
-}
-
-// ✅ Actualizar documento
-function actualizarDocumento(event) {
-    event.preventDefault();
-
-    const id = document.getElementById("editar-id").value;
-    const documento = {
-        empleado: { id: document.getElementById("editar-empleado-id").value },
-        tipoDocumento: document.getElementById("editar-tipo-documento").value.trim(),
-        fechaSubida: document.getElementById("editar-fecha-subida").value.trim()
-    };
-
-    fetch(`http://localhost:8080/api/documentos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(documento)
-    })
     .then(response => {
-        if (response.ok) {
-            cargarDocumentos();
-            cerrarModal("modal-editar");
-            mostrarNotificacion("Documento actualizado correctamente");
-        } else {
-            console.error("Error al actualizar documento.");
+        if (!response.ok) {
+            throw new Error("Error al subir el documento.");
         }
+        return response.json();
     })
-    .catch(error => console.error("Error:", error));
+    .then(() => {
+        cargarDocumentos(empleadoId); // Recarga la lista de documentos
+        mostrarNotificacion("Documento subido correctamente.");
+        // Limpiar formulario si quieres:
+        document.getElementById("nombre-documento").value = "";
+        document.getElementById("tipo-documento").value = "";
+        document.getElementById("archivo-documento").value = "";
+    })
+    .catch(error => {
+        console.error(error);
+        mostrarError("No se pudo subir el documento. Verifica que el empleado exista y que todos los datos estén correctos.");
+    });
 }
 
-// ✅ Eliminar documento
+
+// Eliminar documento
 function eliminarDocumento(id) {
     if (!confirm("¿Estás seguro de que quieres eliminar este documento?")) return;
 
     fetch(`http://localhost:8080/api/documentos/${id}`, {
-        method: "DELETE",
+        method: "DELETE"
     })
-    .then(response => {
-        if (response.ok) {
-            cargarDocumentos();
-            mostrarNotificacion("Documento eliminado correctamente");
-        } else {
-            return response.text().then(text => {
-                console.error("Error al eliminar el documento:", text);
-            });
-        }
-    })
-    .catch(error => console.error("Error:", error));
+        .then(() => {
+            const empleadoId = obtenerIdEmpleado();
+            cargarDocumentos(empleadoId);
+            mostrarNotificacion("Documento eliminado correctamente.");
+        })
+        .catch(error => mostrarError("Error al eliminar documento."));
 }
 
-// =================== NOTIFICACIÓN ===================
+// Ver documento
+function verDocumento(rutaArchivo) {
+    window.open(rutaArchivo, "_blank");
+}
+
+// =================== FUNCIONES AUXILIARES ===================
+
+// Mostrar notificación
 function mostrarNotificacion(mensaje) {
-    const notificacion = document.getElementById("notificacion");
-    notificacion.textContent = mensaje;
-    notificacion.style.display = "block";
-
-    setTimeout(() => {
-        notificacion.classList.add("mostrar");
-    }, 10);
-
-    setTimeout(() => {
-        notificacion.classList.remove("mostrar");
-        setTimeout(() => {
-            notificacion.style.display = "none";
-        }, 500);
-    }, 3000);
+    alert(mensaje);
 }
 
-// ✅ Busqueda de documentos
-document.getElementById("buscar-documento").addEventListener("input", filtrarDocumentos);
-document.getElementById("filtro-documento").addEventListener("change", filtrarDocumentos);
-
-function filtrarDocumentos() {
-    const textoBusqueda = document.getElementById("buscar-documento").value.toLowerCase();
-    const tipoSeleccionado = document.getElementById("filtro-documento").value;
-
-    const filas = document.querySelectorAll("#tabla-documentos tr");
-
-    filas.forEach(fila => {
-        const empleado = fila.children[1].textContent.toLowerCase();
-        const tipoDocumento = fila.children[2].textContent;
-        const fechaSubida = fila.children[3].textContent.toLowerCase();
-
-        const coincideTexto = empleado.includes(textoBusqueda) || fechaSubida.includes(textoBusqueda);
-        const coincideTipo = tipoSeleccionado === "" || tipoDocumento === tipoSeleccionado;
-
-        fila.style.display = coincideTexto && coincideTipo ? "" : "none";
-    });
-}
-
-//MODAL PARA DOCUMENTOS
-// MODAL
-function mostrarModalAgregar() {
-    const modal = document.getElementById("modal-agregar");
-    modal.style.display = "flex";
-
-    setTimeout(() => {
-        modal.classList.add("mostrar");
-    }, 10);
-}
-
-function cerrarModal(idModal) {
-    const modal = document.getElementById(idModal);
-    if (modal) {
-        modal.classList.remove("mostrar");
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 300);
-    }
-}
-
-function mostrarModalEditar() {
-    const modal = document.getElementById("modal-editar");
-    modal.style.display = "flex";
-
-    setTimeout(() => {
-        modal.classList.add("mostrar");
-    }, 10);
+// Mostrar error
+function mostrarError(mensaje) {
+    console.error(mensaje);
+    alert(mensaje);
 }

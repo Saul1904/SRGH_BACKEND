@@ -88,22 +88,7 @@ button:hover {
     background: #2c3e90;
 }
 
-/* Estilos de la tabla de empleados */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
 
-th, td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    background: #2c3e50;
-    color: white;
-}
 
 /* Modales */
 .modal {
@@ -258,4 +243,43 @@ button {
 
 .btn-subir-imagen:hover {
     background-color: #0056b3;
+}
+
+
+/* Estilos para el footer */
+footer {
+    background-color: #2c3e50; /* Fondo oscuro */
+    color: #fff; /* Texto en blanco */
+    padding: 10px 0; /* Espaciado interno vertical */
+    text-align: center; /* Centra el texto */
+}
+
+.footer-links a {
+    color: #d9534f; /* Color rojo para los enlaces */
+    text-decoration: none; /* Elimina el subrayado */
+    margin: 0 10px; /* Margen horizontal */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.footer-links a:hover {
+    text-decoration: underline; /* Subraya el texto al pasar el mouse */
+}
+
+.btn-ayuda {
+    background-color: #3498db; /* Fondo azul */
+    color: white; /* Texto en blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    margin-top: 10px; /* Margen superior */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar el mouse */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.btn-ayuda:hover {
+    background-color: #2980b9; /* Fondo azul más oscuro al pasar el mouse */
+}
+
+.footer a {
+    color: #f1c40f; /* Color amarillo para los enlaces */
+    text-decoration: none; /* Elimina el subrayado */
 }

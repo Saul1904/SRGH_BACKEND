@@ -1,220 +1,219 @@
 /* Estilos generales */
 .bienvenida {
-    background-image: url('fondo2.jpg'); /* 🖼️ Cambia por tu imagen */
-    background-size: cover; /* Ajustar imagen al contenedor */
-    background-position: center; /* Centrar imagen */
-    padding: 50px; /* Espaciado interno */
-    color: white; /* Texto en blanco para contraste */
-    text-align: center; /* Centrar el texto */
-    border-radius: 10px; /* Bordes redondeados (opcional) */
-        
-    
+    background-image: url('fondo2.jpg'); /* Imagen de fondo para la sección de bienvenida */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
+    background-position: center; /* Centra la imagen en el contenedor */
+    padding: 50px; /* Espaciado interno de 50px */
+    color: white; /* Color del texto en blanco */
+    text-align: center; /* Centra el texto horizontalmente */
+    border-radius: 10px; /* Bordes redondeados de 10px */
 }
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
+    font-family: Arial, sans-serif; /* Fuente principal del documento */
+    background-color: #f8f9fa; /* Color de fondo claro */
+    margin: 0; /* Elimina el margen predeterminado del body */
+    padding: 0; /* Elimina el padding predeterminado del body */
 }
 
 .container {
-    display: flex;
-    width: 100vw;
-    height: 180vh;
-
+    display: flex; /* Usa flexbox para organizar los elementos */
+    width: 100vw; /* Ancho del contenedor igual al ancho de la ventana */
+    height: 220vh; /* Altura del contenedor igual a 220% de la altura de la ventana */
 }
 
 /* Barra lateral hamburguesa */
 .sidebar {
-    width: 60px;
-    height: 100vh;
-    background: #2c3e50;
-    color: white;
-    position: fixed;
-    left: 0;
-    top: 0;
-    padding: 15px;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
+    width: 60px; /* Ancho inicial de la barra lateral */
+    height: 100vh; /* Altura completa de la ventana */
+    background: #2c3e50; /* Color de fondo oscuro */
+    color: white; /* Color del texto en blanco */
+    position: fixed; /* Fija la barra lateral en su posición */
+    left: 0; /* Alinea la barra al lado izquierdo */
+    top: 0; /* Alinea la barra al borde superior */
+    padding: 15px; /* Espaciado interno de 15px */
+    transition: width 0.3s ease-in-out; /* Transición suave al cambiar el ancho */
+    overflow: hidden; /* Oculta el contenido que se desborde */
 }
 
 .sidebar:hover {
-    width: 250px; /* Expande al pasar el mouse */
+    width: 250px; /* Expande la barra lateral al pasar el mouse */
 }
 
 .hamburger-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    left: 15px;
+    background: none; /* Sin fondo para el botón */
+    border: none; /* Sin borde para el botón */
+    color: white; /* Color del texto en blanco */
+    font-size: 24px; /* Tamaño de fuente grande */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar el mouse */
+    position: absolute; /* Posición absoluta dentro de la barra */
+    top: 15px; /* Alinea el botón a 15px del borde superior */
+    left: 15px; /* Alinea el botón a 15px del borde izquierdo */
 }
 
 .menu-content {
-    display: none;
+    display: none; /* Oculta el contenido del menú por defecto */
 }
 
 .sidebar:hover .menu-content {
-    display: block;
+    display: block; /* Muestra el contenido del menú al pasar el mouse */
 }
 
 .sidebar ul {
-    list-style: none;
-    padding: 20px 0 0 10px;
+    list-style: none; /* Elimina los estilos de lista predeterminados */
+    padding: 20px 0 0 10px; /* Espaciado interno para los elementos de la lista */
 }
 
 .sidebar ul li {
-    margin: 15px 0;
+    margin: 15px 0; /* Espaciado vertical entre los elementos de la lista */
 }
 
 .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    transition: background 0.3s, padding-left 0.3s;
+    color: white; /* Color del texto en blanco */
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+    display: flex; /* Usa flexbox para alinear los elementos */
+    align-items: center; /* Centra los elementos verticalmente */
+    padding: 10px; /* Espaciado interno de 10px */
+    transition: background 0.3s, padding-left 0.3s; /* Transiciones suaves para el fondo y el padding */
 }
 
 .sidebar ul li a:hover {
-    background-color: #2c3e90;
-    border-radius: 5px;
-    padding-left: 20px; /* Efecto de desplazamiento */
+    background-color: #2c3e90; /* Cambia el fondo al pasar el mouse */
+    border-radius: 5px; /* Bordes redondeados de 5px */
+    padding-left: 20px; /* Desplaza el texto hacia la derecha */
 }
 
 .sidebar ul li a i {
-    margin-right: 10px;
-    font-size: 18px;
+    margin-right: 10px; /* Espaciado a la derecha del ícono */
+    font-size: 18px; /* Tamaño del ícono */
 }
 
 /* Ajuste del contenido principal */
-
 main {
-    flex-grow: 1;
-    padding: 40px;
-    margin-left: 80px;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-grow: 1; /* Permite que el contenido principal crezca para ocupar el espacio disponible */
+    padding: 40px; /* Espaciado interno de 40px */
+    margin-left: 80px; /* Margen izquierdo para evitar superposición con la barra lateral */
+    background-color: #ffffff; /* Fondo blanco */
+    display: flex; /* Usa flexbox para organizar los elementos */
+    flex-direction: column; /* Organiza los elementos en columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
 }
 
 .header {
-    width: 100%;
-    text-align: center;
-    padding: 30px;
-    color: white;
+    width: 100%; /* Ancho completo */
+    text-align: center; /* Centra el texto */
+    padding: 30px; /* Espaciado interno de 30px */
+    color: white; /* Color del texto en blanco */
 }
 
 .card {
-    background-color: #2c3e50;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 8px;
-    text-align: center;
-    width: 250px; /* ✅ Ajusta el tamaño de las cards */
-    height: 150px; /* ✅ Altura más compacta */
-    display: inline-block; /* ✅ Alinear horizontalmente */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
+    background-color: #2c3e50; /* Fondo oscuro */
+    padding: 20px; /* Espaciado interno de 20px */
+    margin: 10px; /* Margen externo de 10px */
+    border-radius: 8px; /* Bordes redondeados de 8px */
+    text-align: center; /* Centra el texto */
+    width: 250px; /* Ancho fijo de 250px */
+    height: 150px; /* Altura fija de 150px */
+    display: inline-block; /* Permite alinear las tarjetas horizontalmente */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.3s ease-in-out; /* Transición suave para el efecto de escala */
 }
 
 .card:hover {
-    transform: scale(1.05); /* ✅ Efecto al pasar el mouse */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
 }
 
-
-/**/
+/* Botón de cerrar sesión */
 #cerrar-sesion {
-    background-color: #ff4d4d; /* Rojo llamativo */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 9px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #ff4d4d; /* Fondo rojo llamativo */
+    color: white; /* Texto en blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 9px; /* Tamaño de fuente pequeño */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar el mouse */
+    transition: background-color 0.3s ease; /* Transición suave para el fondo */
 }
 
 #cerrar-sesion:hover {
-    background-color: #cc0000; /* Rojo más oscuro al pasar el mouse */
+    background-color: #cc0000; /* Fondo rojo más oscuro al pasar el mouse */
+}
+
+/* Estilo del estado de ánimo */
+.tarjeta-estado {
+    background-color: rgba(255, 255, 255, 0); /* Fondo semitransparente */
+    backdrop-filter: blur(6px); /* Efecto de desenfoque */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra */
+    color: #000000; /* Texto en blanco */
+    margin-bottom: 20px; /* Margen inferior */
+    max-width: 1000px; /* Ancho máximo */
+}
+
+.tarjeta-estado h3 {
+    margin-bottom: 10px; /* Margen inferior */
+    font-size: 20px; /* Tamaño de fuente */
+}
+
+.emoji-opciones {
+    display: flex; /* Usa flexbox para organizar los botones */
+    flex-wrap: wrap; /* Permite que los botones se ajusten en varias filas */
+    gap: 10px; /* Espaciado entre los botones */
+    margin-bottom: 15px; /* Margen inferior */
+    justify-content: center; /* Centra los botones horizontalmente */
+}
+
+.emoji-opciones button {
+    font-size: 24px; /* Tamaño de fuente grande */
+    padding: 8px; /* Espaciado interno */
+    background-color: #2c3e50; /* Fondo oscuro */
+    border: none; /* Sin borde */
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar el mouse */
+    transition: transform 0.2s, background-color 0.3s; /* Transiciones suaves */
+}
+
+.emoji-opciones button:hover {
+    background-color: #334c66; /* Fondo azul más oscuro al pasar el mouse */
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el mouse */
 }
 
 /* Estilos para el footer */
 footer {
-    background-color:#2c3e50;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+    background-color: #2c3e50; /* Fondo oscuro */
+    color: #fff; /* Texto en blanco */
+    padding: 10px 0; /* Espaciado interno vertical */
+    text-align: center; /* Centra el texto */
 }
 
 .footer-links a {
-    color: #d9534f;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
+    color: #d9534f; /* Color rojo para los enlaces */
+    text-decoration: none; /* Elimina el subrayado */
+    margin: 0 10px; /* Margen horizontal */
+    font-weight: bold; /* Texto en negrita */
 }
 
 .footer-links a:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* Subraya el texto al pasar el mouse */
 }
+
 .btn-ayuda {
-    background-color: #3498db; /* Azul */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 5px;
+    background-color: #3498db; /* Fondo azul */
+    color: white; /* Texto en blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    margin-top: 10px; /* Margen superior */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar el mouse */
+    border-radius: 5px; /* Bordes redondeados */
 }
 
 .btn-ayuda:hover {
-    background-color: #2980b9;
+    background-color: #2980b9; /* Fondo azul más oscuro al pasar el mouse */
 }
+
 .footer a {
-    color: #f1c40f; /* Color amarillo para enlaces */
-    text-decoration: none;
+    color: #f1c40f; /* Color amarillo para los enlaces */
+    text-decoration: none; /* Elimina el subrayado */
 }
-
-/* Estilo del estado de animo*/
-/* Tarjeta flotante para la encuesta */
-.survey-card {
-    position: fixed;
-    bottom: 10px; /* Puedes ajustar para cambiar la posición */
-    right: 20px; /* Mover a la esquina derecha */
-    background: white;
-padding: 15px;
-border-radius: 10px;
-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-width: 250px;
-text-align: center;
-}
-.survey-card h3 {
-margin-bottom: 10px;
-}
-
-
-.emoji-options span {
-    display: inline-block;
-    text-align: center;
-    font-size: 24px;
-    cursor: pointer;
-    position: relative; /* Para colocar texto encima */
-}
-
-.emoji-options span::after {
-    content: attr(data-label); /* Mostrar el texto */
-    font-size: 14px;
-    display: block;
-    margin-top: 5px;
-    color: #333; /* Ajusta el color si es necesario */
-}
-
-
-
-
-

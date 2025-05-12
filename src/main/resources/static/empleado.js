@@ -2,15 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
-    // Validación mejorada del ID
-    if (!id || isNaN(id)) { 
-        alert("❌ ID de empleado inválido o no encontrado en la URL.");
+    // Validación del ID del empleado
+    if (!id || isNaN(id) || id.trim() === "") {
+        console.warn("❌ ID de empleado no encontrado en la URL.");
         return;
     }
-
     console.log("✅ ID de empleado detectado:", id);
 
-    // Llamar a la función para cargar los datos del empleado
+    // Cargar los datos del empleado
     cargarDatosEmpleado(id);
 });
 
@@ -21,7 +20,6 @@ function cargarDatosEmpleado(idEmpleado) {
         return;
     }
 
-    // Cargar datos del empleado
     fetch(`http://localhost:8080/api/empleados/${idEmpleado}`)
         .then(res => {
             if (!res.ok) throw new Error("❌ Error en la respuesta del servidor.");
@@ -34,90 +32,145 @@ function cargarDatosEmpleado(idEmpleado) {
             document.getElementById('telefono').textContent = empleado.telefono || "No disponible";
             document.getElementById('sueldo').textContent = `$${empleado.sueldo}` || "No disponible";
             document.getElementById('departamento').textContent = empleado.departamento || "No disponible";
-            document.getElementById('fecha').textContent = empleado.fechaContratacion || "No disponible";
+            document.getElementById('fecha').textContent = formatearFecha(empleado.fechaContratacion);
         })
         .catch(error => {
             console.error("❌ Error al cargar los datos del empleado:", error);
         });
+}
 
-    // Cargar documentos
-    fetch(`http://localhost:8080/api/documentos/empleado/${idEmpleado}`)
-        .then(res => res.json())
-        .then(documentos => {
-            const tabla = document.getElementById('tabla-documentos');
-            tabla.innerHTML = ''; // Limpiar tabla antes de agregar nuevos datos
-            documentos.forEach(doc => {
-                tabla.innerHTML += `
-                    <tr>
-                        <td>${doc.nombreDocumento || "Sin nombre"}</td>
-                        <td>${doc.tipoDocumento || "No definido"}</td>
-                        <td>${doc.fechaSubida || "Sin fecha"}</td>
-                        <td>${doc.estado || "Desconocido"}</td>
-                        <td><a href="${doc.urlDocumento}" target="_blank">Ver PDF</a></td>
-                    </tr>
-                `;
-            });
+// Función para formatear fechas
+function formatearFecha(fecha) {
+    return fecha
+        ? new Date(fecha).toLocaleDateString('es-ES', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+          })
+        : "No disponible";
+}
+
+// Función genérica para actualizar datos
+function actualizarDatos(url, data, callback) {
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("❌ Error al guardar los cambios.");
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log("✅ Datos actualizados con éxito:", result);
+            callback(result);
         })
         .catch(error => {
-            console.error("❌ Error al cargar documentos:", error);
+            console.error("❌ Error al actualizar los datos:", error);
         });
 }
 
-// Función para subir documentos
-document.getElementById('form-subir-doc').addEventListener('submit', e => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData();
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+// Función para mostrar el modal de edición de datos públicos
+function mostrarModalEditarDatosPublicos() {
+    const modal = document.getElementById('modal-editar-datos-publicos');
 
-    if (!id) {
-        alert("❌ No se encontró el ID del empleado.");
+    // Cargar los datos actuales en los campos del formulario
+    document.getElementById('editar-nombre').value = document.getElementById('nombre').textContent.trim();
+    document.getElementById('editar-apellido').value = document.getElementById('apellido').textContent.trim();
+    document.getElementById('editar-departamento').value = document.getElementById('departamento').textContent.trim();
+
+    modal.style.display = 'block';
+}
+
+// Manejar el envío del formulario para guardar los cambios en datos públicos
+document.getElementById('form-editar-datos-publicos').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const idEmpleado = new URLSearchParams(window.location.search).get("id");
+    if (!idEmpleado) {
+        console.error("❌ No se encontró el ID del empleado.");
         return;
     }
 
-    formData.append('id_empleado', id);
-    formData.append('nombre_documento', form.nombre.value);
-    formData.append('tipo_documento', form.tipo.value);
-    formData.append('fecha_subida', new Date().toISOString().split('T')[0]); 
-    formData.append('archivo', form.archivo.files[0]);
+    const data = {
+        nombre: document.getElementById('editar-nombre').value.trim(),
+        apellido: document.getElementById('editar-apellido').value.trim(),
+        departamento: document.getElementById('editar-departamento').value.trim()
+    };
 
-    fetch('http://localhost:8080/api/documentos', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => {
-        if (res.ok) {
-            alert('✅ Documento subido correctamente.');
-            form.reset();
-            location.reload();
-        } else {
-            alert('❌ Error al subir el documento.');
-        }
-    })
-    .catch(error => {
-        console.error("❌ Error al subir el documento:", error);
+    actualizarDatos(`http://localhost:8080/api/empleados/${idEmpleado}`, data, result => {
+        document.getElementById('nombre').textContent = result.nombre || "No disponible";
+        document.getElementById('apellido').textContent = result.apellido || "No disponible";
+        document.getElementById('departamento').textContent = result.departamento || "No disponible";
+        cerrarModal('modal-editar-datos-publicos');
     });
 });
 
-// Función para habilitar el modal
-function habilitarEdicion() {
-    document.getElementById('modal-editar').style.display = 'flex';
+// Función para mostrar el modal de edición de datos personales
+function mostrarModalEditarDatosPersonales() {
+    const modal = document.getElementById('modal-editar-datos-personales');
+
+    // Cargar los datos actuales en los campos del formulario
+    document.getElementById('editar-email').value = document.getElementById('email').textContent.trim();
+    document.getElementById('editar-telefono').value = document.getElementById('telefono').textContent.trim();
+    document.getElementById('editar-sueldo').value = document.getElementById('sueldo').textContent.trim();
+    document.getElementById('editar-fecha').value = document.getElementById('fecha').textContent.trim();
+
+    modal.style.display = 'block';
 }
 
-function cerrarModal() {
-    document.getElementById('modal-editar').style.display = 'none';
-}
+// Manejar el envío del formulario para guardar los cambios en datos personales
+document.getElementById('form-editar-datos-personales').addEventListener('submit', function (e) {
+    e.preventDefault();
 
+    const idEmpleado = new URLSearchParams(window.location.search).get("id");
+    if (!idEmpleado) {
+        console.error("❌ No se encontró el ID del empleado.");
+        return;
+    }
+
+    const fechaInput = document.getElementById('editar-fecha').value.trim();
+    const fechaFormateada = new Date(fechaInput).toISOString().split('T')[0];
+
+    const data = {
+        email: document.getElementById('editar-email').value.trim(),
+        telefono: document.getElementById('editar-telefono').value.trim(),
+        sueldo: document.getElementById('editar-sueldo').value.trim(),
+        fechaContratacion: fechaFormateada
+    };
+
+    actualizarDatos(`http://localhost:8080/api/empleados/${idEmpleado}`, data, result => {
+        document.getElementById('email').textContent = result.email || "No disponible";
+        document.getElementById('telefono').textContent = result.telefono || "No disponible";
+        document.getElementById('sueldo').textContent = `$${result.sueldo}` || "No disponible";
+        document.getElementById('fecha').textContent = formatearFecha(result.fechaContratacion);
+        cerrarModal('modal-editar-datos-personales');
+    });
+});
+
+// Función para mostrar pestañas
 function mostrarTab(tabId) {
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.contenido-tab').forEach(tab => tab.classList.remove('active'));
+    const tabs = document.querySelectorAll('.contenido-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
 
-    const tabSeleccionado = document.querySelector(`.tab[data-tab="${tabId}"]`);
+    const tabSeleccionado = document.getElementById(tabId);
     if (tabSeleccionado) {
         tabSeleccionado.classList.add('active');
-        document.getElementById(tabId).classList.add('active');
-    } else {
-        console.warn("Tab no encontrado:", tabId);
     }
+}
+
+// Función para cerrar el modal
+function cerrarModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+}
+
+function abrirModalAgregarImagen(event, idEmpleado) {
+    event.stopPropagation(); // Evita que el clic en el botón active la redirección
+    console.log(`Abrir modal para agregar imagen al empleado con ID: ${idEmpleado}`);
+    // Aquí puedes abrir un modal o realizar la acción para agregar la imagen
 }

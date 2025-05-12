@@ -18,13 +18,9 @@
             <div class="menu-content">
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
-                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
                     <li><a href="candidatos.html"><i class="fas fa-user-plus"></i> Candidatos</a></li>
-                    <li><a href="ausencias.html"><i class="fas fa-calendar-times"></i> Ausencias</a></li>
-                    <li><a href="turnos.html"><i class="fas fa-clock"></i> Turnos</a></li>
-                    <li><a href="nominas.html"><i class="fas fa-file-invoice-dollar"></i> Nóminas</a></li>
+                    <li><a href="empleados.html"><i class="fas fa-user"></i> Empleados</a></li>
                     <li><a href="seguridad-social.html"><i class="fas fa-shield-alt"></i> Seguridad Social</a></li>
-                    <li><a href="documentos.html"><i class="fas fa-folder"></i> Documentos</a></li>
                     <li><a href="informes.html"><i class="fas fa-chart-line"></i> Informes</a></li>
                 </ul>
             </div>
@@ -84,35 +80,17 @@
         </div>
     </div>
 
-    
-
-    <!-- Modal para editar empleados -->
-    <div id="modal-editar" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModal('modal-editar')">&times;</span>
-            <h2>Editar Empleado</h2>
-            <form id="form-editar">
-                <input type="hidden" id="editar-id">
-                <input type="text" id="editar-nombre" placeholder="Nombre" required>
-                <input type="text" id="editar-apellido" placeholder="Apellido" required>
-                <input type="email" id="editar-email" placeholder="Email" required>
-                <input type="text" id="editar-telefono" placeholder="Teléfono" required>
-                <input type="number" id="editar-sueldo" placeholder="Sueldo" required>
-                <input type="date" id="editar-fecha_contratacion" required>
-                <input type="text" id="editar-departamento" placeholder="Departamento" required>
-                <button type="submit">Actualizar</button>
-            </form>
-        </div>
-    </div>
-    
-
     <!-- Notificación de éxito -->
     <div id="notificacion" class="notificacion">Empleado agregado con éxito</div>
     <!-- ✅ Notificación de éxito -->
     <div id="notificacion">Empleado actualizado correctamente</div>
 
     <script src="empleados.js"></script>
+    <footer class="footer">
+        <p>&copy; 2025 SSMA Solutions. Todos los derechos reservados.</p>
+        <p>Contacto: <a href="mailto:ssma_solutions@correo.com">ssma_solutions@outlook.com</a> | Tel: +52 555-123-4567</p>
 
+    </footer>
 
 </body>
 </html>

@@ -1,113 +1,119 @@
 package com.ssma.sgrh.models;
 
-import java.time.LocalDate;
+// Importa las clases necesarias para la entidad
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
+// Marca esta clase como una entidad JPA, que se mapea a una tabla en la base de datos
 @Entity
-@Table(name = "documentos")
 public class Documento {
 
+    // Marca este campo como la clave primaria de la entidad
     @Id
+    // Especifica que el valor de la clave primaria será generado automáticamente
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Define una relación de muchos a uno con la entidad Empleado
     @ManyToOne
-    @JoinColumn(name = "id_empleado", nullable = false)
+    // Especifica la columna de clave foránea en la base de datos
+    @JoinColumn(name = "empleado_id", nullable = false)
     private Empleado empleado;
 
-    @Column(name = "nombre_documento", nullable = false)
-    private String nombreDocumento;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_documento", nullable = false)
-    private TipoDocumento tipoDocumento;
-
-    @Column(name = "fecha_subida", nullable = false)
-    private LocalDate fechaSubida;
-
-    @Enumerated(EnumType.STRING)
+    // Mapea este campo a una columna no nula en la base de datos
     @Column(nullable = false)
-    private EstadoDocumento estado = EstadoDocumento.VIGENTE;
+    private String nombreDocumento; // Nombre del documento
 
-    @Lob
+    // Mapea este campo a una columna no nula en la base de datos
     @Column(nullable = false)
-    private byte[] archivo;
+    private String tipoDocumento; // Tipo del documento
 
-    // Getters y Setters
+    // Mapea este campo a una columna no nula en la base de datos
+    @Column(nullable = false)
+    private LocalDateTime fechaSubida; // Fecha y hora de subida del documento
+
+    // Mapea este campo a una columna no nula en la base de datos
+    @Column(nullable = false)
+    private String estado; // Estado del documento (por ejemplo, activo, inactivo)
+
+    // Mapea este campo a una columna no nula en la base de datos
+    @Column(nullable = false)
+    private String archivo; // Ruta o nombre del archivo asociado al documento
+
+    // Getter para la clave primaria
     public Long getId() {
         return id;
     }
 
+    // Setter para la clave primaria
     public void setId(Long id) {
         this.id = id;
     }
 
+    // Getter para la entidad Empleado asociada
     public Empleado getEmpleado() {
         return empleado;
     }
 
+    // Setter para la entidad Empleado asociada
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
 
+    // Getter para el nombre del documento
     public String getNombreDocumento() {
         return nombreDocumento;
     }
 
+    // Setter para el nombre del documento
     public void setNombreDocumento(String nombreDocumento) {
         this.nombreDocumento = nombreDocumento;
     }
 
-    public TipoDocumento getTipoDocumento() {
+    // Getter para el tipo del documento
+    public String getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+    // Setter para el tipo del documento
+    public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public LocalDate getFechaSubida() {
+    // Getter para la fecha y hora de subida
+    public LocalDateTime getFechaSubida() {
         return fechaSubida;
     }
 
-    public void setFechaSubida(LocalDate fechaSubida) {
+    // Setter para la fecha y hora de subida
+    public void setFechaSubida(LocalDateTime fechaSubida) {
         this.fechaSubida = fechaSubida;
     }
 
-    public EstadoDocumento getEstado() {
+    // Getter para el estado del documento
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoDocumento estado) {
+    // Setter para el estado del documento
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
-    public byte[] getArchivo() {
+    // Getter para la ruta o nombre del archivo
+    public String getArchivo() {
         return archivo;
     }
 
-    public void setArchivo(byte[] archivo) {
+    // Setter para la ruta o nombre del archivo
+    public void setArchivo(String archivo) {
         this.archivo = archivo;
     }
-
-    // Enums internos o separados
-    public enum TipoDocumento {
-        ACTA_NACIMIENTO, CURP, RFC, COMPROBANTE_DOMICILIO, OTRO
-    }
-
-    public enum EstadoDocumento {
-        VIGENTE, PENDIENTE, EXPIRADO
-    }
 }
-

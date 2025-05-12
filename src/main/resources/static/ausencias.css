@@ -1,189 +1,216 @@
-/* Estilo general */
+/* Estilo general para centrar el contenido y definir el ancho del contenedor */
 .container {
     width: 80%;
     margin: auto;
     text-align: center;
 }
 
-/*BARRA LATERAL*/
+/* BARRA LATERAL */
 
-/* Barra lateral hamburguesa */
+/* Estilo de la barra lateral (sidebar) */
 .sidebar {
-    width: 60px;
-    height: 100vh;
-    background: #2c3e50;
-    color: white;
-    position: fixed;
-    left: 0;
-    top: 0;
-    padding: 15px;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
+    width: 60px; /* Ancho inicial de la barra lateral */
+    height: 100vh; /* Altura completa de la ventana */
+    background: #2c3e50; /* Color de fondo */
+    color: white; /* Color del texto */
+    position: fixed; /* Fija la barra en la pantalla */
+    left: 0; /* Posición en el lado izquierdo */
+    top: 0; /* Posición en la parte superior */
+    padding: 15px; /* Espaciado interno */
+    transition: width 0.3s ease-in-out; /* Transición suave al expandir */
+    overflow: hidden; /* Oculta el contenido desbordado */
 }
 
+/* Expande la barra lateral al pasar el mouse */
 .sidebar:hover {
-    width: 250px; /* Expande al pasar el mouse */
+    width: 250px; /* Ancho expandido */
 }
 
+/* Estilo del botón de hamburguesa */
 .hamburger-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    left: 15px;
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    color: white; /* Color del texto */
+    font-size: 24px; /* Tamaño del texto */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    position: absolute; /* Posición absoluta dentro de la barra */
+    top: 15px; /* Espaciado desde la parte superior */
+    left: 15px; /* Espaciado desde la izquierda */
 }
 
+/* Oculta el contenido del menú por defecto */
 .menu-content {
     display: none;
 }
 
+/* Muestra el contenido del menú al expandir la barra lateral */
 .sidebar:hover .menu-content {
     display: block;
 }
 
+/* Estilo de la lista de navegación dentro de la barra lateral */
 .sidebar ul {
-    list-style: none;
-    padding: 20px 0 0 10px;
+    list-style: none; /* Sin viñetas */
+    padding: 20px 0 0 10px; /* Espaciado interno */
 }
 
+/* Estilo de los elementos de la lista */
 .sidebar ul li {
-    margin: 15px 0;
+    margin: 15px 0; /* Espaciado entre elementos */
 }
 
+/* Estilo de los enlaces dentro de la barra lateral */
 .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    transition: background 0.3s, padding-left 0.3s;
+    color: white; /* Color del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: flex; /* Alineación flexible */
+    align-items: center; /* Centra verticalmente */
+    padding: 10px; /* Espaciado interno */
+    transition: background 0.3s, padding-left 0.3s; /* Transiciones suaves */
 }
 
+/* Efecto al pasar el mouse sobre los enlaces */
 .sidebar ul li a:hover {
-    background-color: #2c3e90;
-    border-radius: 5px;
-    padding-left: 20px; /* Efecto de desplazamiento */
+    background-color: #2c3e90; /* Cambia el fondo */
+    border-radius: 5px; /* Bordes redondeados */
+    padding-left: 20px; /* Desplazamiento hacia la derecha */
 }
 
+/* Estilo de los íconos dentro de los enlaces */
 .sidebar ul li a i {
-    margin-right: 10px;
-    font-size: 18px;
+    margin-right: 10px; /* Espaciado a la derecha del ícono */
+    font-size: 18px; /* Tamaño del ícono */
 }
-
 
 /* Botón de agregar ausencia */
 .btn-agregar {
-    position: right;
-    right: 20px;
-    top: 20px;
-    padding: 10px 15px;
-    background: #2c3e50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+    position: right; /* Posición relativa */
+    right: 20px; /* Espaciado desde la derecha */
+    top: 20px; /* Espaciado desde la parte superior */
+    padding: 10px 15px; /* Espaciado interno */
+    background: #2c3e50; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    border-radius: 5px; /* Bordes redondeados */
 }
 
+/* Efecto al pasar el mouse sobre cualquier botón */
 button:hover {
-    background: #2c3e90;
+    background: #2c3e90; /* Cambia el color de fondo */
 }
 
-/* Tabla de ausencias */
+/* TABLA DE AUSENCIAS */
+
+/* Estilo general de la tabla */
 table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%; /* Ancho completo */
+    border-collapse: collapse; /* Elimina los bordes dobles */
 }
 
+/* Estilo de las celdas de la tabla */
 th, td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+    padding: 10px; /* Espaciado interno */
+    border-bottom: 1px solid #ddd; /* Línea inferior */
+    text-align: left; /* Alineación del texto */
 }
 
+/* Estilo de los encabezados de la tabla */
 th {
-    background: #2c3e50;
-    color: white;
+    background: #2c3e50; /* Color de fondo */
+    color: white; /* Color del texto */
 }
 
-/* Modales */
+/* MODALES */
+
+/* Estilo general del modal */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    display: none; /* Oculta el modal por defecto */
+    position: fixed; /* Fija el modal en la pantalla */
+    z-index: 1000; /* Prioridad sobre otros elementos */
+    left: 0; /* Posición en el lado izquierdo */
+    top: 0; /* Posición en la parte superior */
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Altura completa */
+    background: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    opacity: 0; /* Transparente por defecto */
+    transition: opacity 0.3s ease-in-out; /* Transición suave */
 }
 
+/* Contenido del modal */
 .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    text-align: center;
-    transform: scale(0.8);
-    transition: transform 0.3s ease-in-out;
+    background: white; /* Fondo blanco */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    width: 400px; /* Ancho fijo */
+    text-align: center; /* Centra el texto */
+    transform: scale(0.8); /* Escala inicial */
+    transition: transform 0.3s ease-in-out; /* Transición suave */
 }
 
+/* Muestra el modal */
 .modal.mostrar {
-    opacity: 1;
+    opacity: 1; /* Hace visible el modal */
 }
 
+/* Escala el contenido del modal al mostrarlo */
 .modal.mostrar .modal-content {
-    transform: scale(1);
+    transform: scale(1); /* Escala normal */
 }
 
+/* Estilo del botón de cierre del modal */
 .close {
-    color: red;
-    font-size: 20px;
-    cursor: pointer;
-    float: right;
+    color: red; /* Color rojo */
+    font-size: 20px; /* Tamaño del texto */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    float: right; /* Alinea a la derecha */
 }
 
-/* Notificación */
+/* NOTIFICACIÓN */
+
+/* Estilo general de la notificación */
 .notificacion {
-    display: none;
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: green;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    display: none; /* Oculta la notificación por defecto */
+    position: fixed; /* Fija la notificación en la pantalla */
+    top: 10px; /* Espaciado desde la parte superior */
+    right: 10px; /* Espaciado desde la derecha */
+    background: green; /* Fondo verde */
+    color: white; /* Color del texto */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño del texto */
+    opacity: 0; /* Transparente por defecto */
+    transition: opacity 0.5s ease-in-out; /* Transición suave */
 }
 
+/* Muestra la notificación */
 .notificacion.mostrar {
-    opacity: 1;
+    opacity: 1; /* Hace visible la notificación */
 }
 
-/* Ajustes en los botones de la tabla */
+/* AJUSTES EN LOS BOTONES DE LA TABLA */
+
+/* Estilo de los íconos dentro de los botones */
 button i {
-    margin-right: 5px;
+    margin-right: 5px; /* Espaciado a la derecha del ícono */
 }
 
+/* Estilo general de los botones */
 button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    display: flex; /* Alineación flexible */
+    align-items: center; /* Centra verticalmente */
+    gap: 5px; /* Espaciado entre ícono y texto */
 }
 
-/*BARRA DE BUSQUEDA*/
+/* BARRA DE BÚSQUEDA */
+
+/* Estilo de los campos de búsqueda */
 #buscar-empleado, #filtro-departamento {
-    padding: 10px;
-    margin: 10px;
-    width: 200px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 10px; /* Espaciado interno */
+    margin: 10px; /* Espaciado externo */
+    width: 200px; /* Ancho fijo */
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 5px; /* Bordes redondeados */
 }

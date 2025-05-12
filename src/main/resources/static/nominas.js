@@ -1,9 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-    cargarNominas();
+    const empleadoId = obtenerIdEmpleado();
+    if (!empleadoId) {
+        mostrarError("No se encontró el ID del empleado.");
+        return;
+    }
+
+    cargarNominas(empleadoId);
     cargarEmpleadosEnFormulario();
-    document.getElementById("form-agregar").addEventListener("submit", agregarNomina);
-    document.getElementById("form-editar").addEventListener("submit", actualizarNomina);
+    document.getElementById("form-agregar-nomina").addEventListener("submit", event => agregarNomina(event, empleadoId));
+    document.getElementById("form-editar-nomina").addEventListener("submit", event => actualizarNomina(event, empleadoId));
 });
+
+// =================== FUNCIONES PRINCIPALES ===================
 
 function cargarEmpleadosEnFormulario() {
     fetch("http://localhost:8080/api/empleados")
@@ -21,50 +29,70 @@ function cargarEmpleadosEnFormulario() {
                 selectEditar.innerHTML += option;
             });
         })
-        .catch(error => console.error("Error al cargar empleados:", error));
+        .catch(error => mostrarError("Error al cargar empleados."));
+}
+// Obtener el ID del empleado desde el HTML o la URL
+function obtenerIdEmpleado() {
+    const empleadoDetalle = document.getElementById("empleado-detalle");
+    if (empleadoDetalle) {
+        return empleadoDetalle.getAttribute("data-id");
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    return params.get("id");
 }
 
-// ✅ Cargar nóminas desde el backend
-function cargarNominas() {
-    fetch("http://localhost:8080/api/nominas")
+// Cargar nóminas del empleado actual
+function cargarNominas(empleadoId) {
+    fetch(`http://localhost:8080/api/nominas/empleado/${empleadoId}`)
         .then(response => response.json())
-        .then(data => {
-            const tablaNominas = document.getElementById("tabla-nominas");
-            tablaNominas.innerHTML = "";
-
-            data.forEach(nomina => {
-                const empleadoNombre = nomina.empleado 
-                    ? `${nomina.empleado.nombre} ${nomina.empleado.apellido}` 
-                    : "No asignado";
-
-                const fechaPago = nomina.fechaPago ? new Date(nomina.fechaPago).toLocaleDateString("es-MX") : "Sin definir";
-
-                const fila = document.createElement("tr");
-                fila.innerHTML = `
-                    <td>${nomina.id}</td>
-                    <td>${empleadoNombre}</td>
-                    <td>${fechaPago}</td>
-                    <td>${nomina.sueldoBase}</td>
-                    <td>${nomina.deducciones}</td>
-                    <td>${nomina.pagoNeto}</td>
-                    <td>
-                        <button onclick="editarNomina(${nomina.id})">✏️ Editar</button>
-                        <button onclick="eliminarNomina(${nomina.id})">🗑️ Eliminar</button>
-                    </td>
-                `;
-                tablaNominas.appendChild(fila);
-            });
-        })
-        .catch(error => console.error("Error al cargar nóminas:", error));
+        .then(data => actualizarTablaNominas(data))
+        .catch(error => mostrarError("Error al cargar nóminas."));
 }
 
-// ✅ Agregar nómina
-function agregarNomina(event) {
+// Actualizar tabla de nóminas
+function actualizarTablaNominas(nominas) {
+    const tablaNominas = document.getElementById("tabla-nominas");
+    tablaNominas.innerHTML = "";
+
+    nominas.forEach(nomina => {
+        const fila = crearFilaNomina(nomina);
+        tablaNominas.appendChild(fila);
+    });
+}
+
+// Crear fila de nómina
+function crearFilaNomina(nomina) {
+    const empleadoNombre = nomina.empleado
+        ? `${nomina.empleado.nombre} ${nomina.empleado.apellido}`
+        : "No asignado";
+
+    const fechaPago = formatearFecha(nomina.fechaPago);
+
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+        <td>${nomina.id}</td>
+        <td>${empleadoNombre}</td>
+        <td>${fechaPago}</td>
+        <td>${nomina.sueldoBase}</td>
+        <td>${nomina.deducciones}</td>
+        <td>${nomina.pagoNeto}</td>
+        <td>
+            <button onclick="editarNomina(${nomina.id})">✏️ Editar</button>
+            <button onclick="eliminarNomina(${nomina.id})">🗑️ Eliminar</button>
+        </td>
+    `;
+    return fila;
+}
+
+// =================== CRUD DE NÓMINAS ===================
+
+// Agregar nómina
+function agregarNomina(event, empleadoId) {
     event.preventDefault();
 
-    const empleadoId = document.getElementById("empleado-id").value;
     const nomina = {
-        empleado: { id: empleadoId }, 
+        empleado: { id: empleadoId },
         fechaPago: document.getElementById("fecha-pago").value.trim(),
         sueldoBase: document.getElementById("sueldo-base").value.trim(),
         deducciones: document.getElementById("deducciones").value.trim(),
@@ -76,16 +104,16 @@ function agregarNomina(event) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(nomina)
     })
-    .then(response => response.json())
-    .then(() => {
-        cargarNominas();
-        cerrarModal("modal-agregar");
-        mostrarNotificacion("Nomina agregado correctamente");
-    })
-    .catch(error => console.error("Error al agregar nómina:", error));
+        .then(response => response.json())
+        .then(() => {
+            cargarNominas(empleadoId);
+            cerrarModal("modal-agregar-nomina");
+            mostrarNotificacion("Nómina agregada correctamente.");
+        })
+        .catch(error => mostrarError("Error al agregar nómina."));
 }
 
-// ✅ Editar nómina
+// Editar nómina
 function editarNomina(id) {
     fetch(`http://localhost:8080/api/nominas/${id}`)
         .then(response => response.json())
@@ -97,18 +125,18 @@ function editarNomina(id) {
             document.getElementById("editar-deducciones").value = nomina.deducciones;
             document.getElementById("editar-pago-neto").value = nomina.pagoNeto;
 
-            mostrarModalEditar();
+            mostrarModal("modal-editar-nomina");
         })
-        .catch(error => console.error("Error al cargar nómina para edición:", error));
+        .catch(error => mostrarError("Error al cargar nómina para edición."));
 }
 
-// ✅ Actualizar nómina
-function actualizarNomina(event) {
+// Actualizar nómina
+function actualizarNomina(event, empleadoId) {
     event.preventDefault();
 
     const id = document.getElementById("editar-id").value;
     const nomina = {
-        empleado: { id: document.getElementById("editar-empleado-id").value },
+        empleado: { id: empleadoId },
         fechaPago: document.getElementById("editar-fecha-pago").value.trim(),
         sueldoBase: document.getElementById("editar-sueldo-base").value.trim(),
         deducciones: document.getElementById("editar-deducciones").value.trim(),
@@ -120,50 +148,57 @@ function actualizarNomina(event) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(nomina)
     })
-    .then(response => {
-        if (response.ok) {
-            cargarNominas();
-            cerrarModal("modal-editar");
-            mostrarNotificacion("Nomina actualizado correctamente");
-        } else {
-            console.error("Error al actualizar nómina.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
+        .then(() => {
+            cargarNominas(empleadoId);
+            cerrarModal("modal-editar-nomina");
+            mostrarNotificacion("Nómina actualizada correctamente.");
+        })
+        .catch(error => mostrarError("Error al actualizar nómina."));
 }
 
-// ✅ Eliminar nómina
+// Eliminar nómina
 function eliminarNomina(id) {
     if (!confirm("¿Estás seguro de que quieres eliminar esta nómina?")) return;
 
     fetch(`http://localhost:8080/api/nominas/${id}`, {
-        method: "DELETE",
+        method: "DELETE"
     })
-    .then(response => {
-        if (response.ok) {
-            cargarNominas();
-            mostrarNotificacion("Nomina eliminado correctamente");
-        } else {
-            return response.text().then(text => {
-                console.error("Error al eliminar la nómina:", text);
-            });
-        }
-    })
-    .catch(error => console.error("Error:", error));
+        .then(() => {
+            const empleadoId = obtenerIdEmpleado();
+            cargarNominas(empleadoId);
+            mostrarNotificacion("Nómina eliminada correctamente.");
+        })
+        .catch(error => mostrarError("Error al eliminar nómina."));
 }
 
-// MODAL
-function mostrarModalAgregar() {
-    const modal = document.getElementById("modal-agregar");
-    modal.style.display = "flex";
+// =================== FUNCIONES AUXILIARES ===================
 
-    setTimeout(() => {
-        modal.classList.add("mostrar");
-    }, 10);
+// Formatear fechas
+function formatearFecha(fecha) {
+    return fecha
+        ? new Date(fecha).toLocaleDateString("es-MX", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit"
+          })
+        : "Sin definir";
 }
 
-function cerrarModal(idModal) {
-    const modal = document.getElementById(idModal);
+
+
+// Mostrar y cerrar modales
+
+function mostrarModalAgregarNomina() {
+    mostrarModal("modal-agregar-nomina");
+}
+
+// Asegúrate de que la función esté disponible globalmente
+window.mostrarModalAgregarNomina = mostrarModalAgregarNomina;
+
+
+
+function cerrarModal(modalId) {
+    const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove("mostrar");
         setTimeout(() => {
@@ -171,55 +206,3 @@ function cerrarModal(idModal) {
         }, 300);
     }
 }
-
-function mostrarModalEditar() {
-    const modal = document.getElementById("modal-editar");
-    modal.style.display = "flex";
-
-    setTimeout(() => {
-        modal.classList.add("mostrar");
-    }, 10);
-}
-
-// =================== NOTIFICACIÓN ===================
-function mostrarNotificacion(mensaje) {
-    const notificacion = document.getElementById("notificacion");
-    notificacion.textContent = mensaje;
-    notificacion.style.display = "block";
-
-    setTimeout(() => {
-        notificacion.classList.add("mostrar");
-    }, 10);
-
-    setTimeout(() => {
-        notificacion.classList.remove("mostrar");
-        setTimeout(() => {
-            notificacion.style.display = "none";
-        }, 500);
-    }, 3000);
-}
-
-//BUSQUEDA NOMINAS
-// ✅ Busqueda de nóminas
-document.getElementById("buscar-nomina").addEventListener("input", filtrarNominas);
-document.getElementById("filtro-fecha").addEventListener("change", filtrarNominas);
-
-function filtrarNominas() {
-    const textoBusqueda = document.getElementById("buscar-nomina").value.toLowerCase();
-    const fechaSeleccionada = document.getElementById("filtro-fecha").value;
-
-    const filas = document.querySelectorAll("#tabla-nominas tr");
-
-    filas.forEach(fila => {
-        const empleado = fila.children[1].textContent.toLowerCase();
-        const fechaPago = fila.children[2].textContent.toLowerCase();
-        const sueldoBase = fila.children[3].textContent.toLowerCase();
-        const pagoNeto = fila.children[5].textContent.toLowerCase();
-
-        const coincideTexto = empleado.includes(textoBusqueda) || sueldoBase.includes(textoBusqueda) || pagoNeto.includes(textoBusqueda);
-        const coincideFecha = fechaSeleccionada === "" || fechaPago.includes(fechaSeleccionada);
-
-        fila.style.display = coincideTexto && coincideFecha ? "" : "none";
-    });
-}
-

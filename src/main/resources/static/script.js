@@ -34,7 +34,7 @@ document.getElementById("card-nominas").addEventListener("click", () => {
 });
 
 document.getElementById("card-ausencias").addEventListener("click", () => {
-    window.location.href = "ausencias.html";
+    window.location.href = "";
 });
 
 
@@ -102,11 +102,25 @@ function cargarGrafica() {
 
 window.addEventListener('DOMContentLoaded', cargarGrafica);
 
-// =================== CARGAR ESTADO DE ÁNIMO ===================
-function guardarSeleccion(seleccion) {
-    let lista = document.getElementById("resultados");
-    let nuevoElemento = document.createElement("li");
-    nuevoElemento.textContent = seleccion;
-    lista.appendChild(nuevoElemento);
+ 
+        const surveyToggle = document.getElementById('surveyToggle');
+        const surveyCard = document.getElementById('surveyCard');
+
+        surveyToggle.addEventListener('click', () => {
+            surveyCard.classList.toggle('hidden');
+        });
+    
+
+ 
+
+// Mostrar estado guardado al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+  const estadoGuardado = localStorage.getItem("estadoAnimo");
+  document.getElementById("estadoActual").textContent = estadoGuardado || "Sin definir";
+});
+
+function setEstado(emoji) {
+  localStorage.setItem("estadoAnimo", emoji);
+  document.getElementById("estadoActual").textContent = emoji;
 }
 
