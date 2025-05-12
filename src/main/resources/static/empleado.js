@@ -169,8 +169,3 @@ function cerrarModal(modalId) {
     modal.style.display = 'none';
 }
 
-function abrirModalAgregarImagen(event, idEmpleado) {
-    event.stopPropagation(); // Evita que el clic en el botón active la redirección
-    console.log(`Abrir modal para agregar imagen al empleado con ID: ${idEmpleado}`);
-    // Aquí puedes abrir un modal o realizar la acción para agregar la imagen
-}
